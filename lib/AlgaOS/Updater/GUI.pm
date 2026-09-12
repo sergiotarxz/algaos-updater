@@ -82,8 +82,9 @@ sub activate($self) {
     $overlay->set_child($picture);
     my $scroll = Gtk::ScrolledWindow->new;
     $self->_scroll($scroll);
+    $self->_frontend_shows_update($self->_have_update);
     $self->_scroll->set_child(
-          $self->_have_update
+          $self->_frontend_shows_update
         ? $self->_show_updates_grid
         : $self->_show_no_updates_grid
     );
@@ -114,8 +115,15 @@ sub is_there_updates {
 
 sub _check_pid($self) {
     if ( 0 < waitpid $self->pid, WNOHANG ) {
-	$self->_have_update($? == 0);
-	$self->activate;
+        $self->_have_update( $? == 0 );
+        if (   $self->_have_update
+            && $self->_have_update != $self->_frontend_shows_update )
+        {
+            $self->activate;
+        }
+	# If we didn't act before frontend must
+	# act like it knows what happened.
+	$self->_frontend_shows_update($self->_have_update);
         $self->pid(0);
         return 1;
     }
