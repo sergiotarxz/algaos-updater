@@ -63,7 +63,7 @@ sub activate($self) {
     $self->started_gui(1);
     my $const = $self->const;
     my $win   = Gtk::ApplicationWindow->new( $self->app );
-    $win->set_title("Update AlgaOS");
+    $win->set_title("Actualiza AlgaOS");
     my $display  = $win->get_display;
     my $provider = Gtk::CssProvider->new;
     $provider->load_from_path( $dist_dir_files . '/style.css' );
