@@ -22,15 +22,17 @@ BEGIN {
     };
 }
 
-has app         => ( is => 'lazy' );
-has win         => ( is => 'rw' );
-has const       => ( is => 'lazy' );
-has pipe_name   => ( is => 'ro', required => 1 );
-has secret      => ( is => 'ro', required => 1 );
-has _grid_row   => ( is => 'rw', default  => sub { 0 } );
-has _scroll     => ( is => 'rw' );
-has started_gui => ( is => 'rw' );
-has pid         => ( is => 'rw' );
+has app                    => ( is => 'lazy' );
+has win                    => ( is => 'rw' );
+has const                  => ( is => 'lazy' );
+has pipe_name              => ( is => 'ro', required => 1 );
+has secret                 => ( is => 'ro', required => 1 );
+has _grid_row              => ( is => 'rw', default  => sub { 0 } );
+has _scroll                => ( is => 'rw' );
+has started_gui            => ( is => 'rw' );
+has pid                    => ( is => 'rw' );
+has _frontend_shows_update => ( is => 'rw' );
+has _have_update           => ( is => 'rw' );
 
 sub call_and_increment_grid_row( $self, $coderef ) {
     $coderef->();
@@ -47,6 +49,15 @@ sub _build_app {
 
 sub activate($self) {
     if ( $self->started_gui ) {
+        if ( $self->_frontend_shows_update != $self->_have_update ) {
+            if ( !$self->_have_update ) {
+                $self->_scroll->set_child( $self->_show_no_updates_grid );
+            }
+            else {
+                $self->_scroll->set_child( $self->_show_updates_grid );
+            }
+            $self->_frontend_shows_update( $self->_have_update );
+        }
         return;
     }
     $self->started_gui(1);
@@ -71,6 +82,11 @@ sub activate($self) {
     $overlay->set_child($picture);
     my $scroll = Gtk::ScrolledWindow->new;
     $self->_scroll($scroll);
+    $self->_scroll->set_child(
+          $self->_have_update
+        ? $self->_show_updates_grid
+        : $self->_show_no_updates_grid
+    );
     $overlay->add_overlay($scroll);
     $win->set_child($overlay);
     $win->connect(
@@ -98,7 +114,8 @@ sub is_there_updates {
 
 sub _check_pid($self) {
     if ( 0 < waitpid $self->pid, WNOHANG ) {
-        $self->activate if $? == 0;
+	$self->_have_update($? == 0);
+	$self->activate;
         $self->pid(0);
         return 1;
     }
@@ -143,6 +160,8 @@ sub _handle_pid_and_schedule($self) {
 }
 
 sub run($self) {
+    $self->_have_update(0);
+    $self->_frontend_shows_update(0);
     $self->app->connect(
         'startup' => sub {
             $self->app->timeout_add(
@@ -162,4 +181,52 @@ sub run($self) {
     $self->app->hold;
     $self->app->run(@ARGV);
 }
+
+sub _show_updates_grid($self) {
+    my $const = $self->const;
+    my $grid  = Gtk::Grid->new;
+    $grid->set_valign( $const->GTK_ALIGN_CENTER );
+    $grid->set_halign( $const->GTK_ALIGN_CENTER );
+    $grid->add_css_class('transparent_background');
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label = Gtk::Label->new('Actualiza AlgaOS');
+            $label->add_css_class('title-1');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label =
+              Gtk::Label->new(
+                'Hay actualizaciones disponibles. ¡Actualiza ahora!');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    return $grid;
+}
+
+sub _show_no_updates_grid($self) {
+    my $const = $self->const;
+    my $grid  = Gtk::Grid->new;
+    $grid->set_valign( $const->GTK_ALIGN_CENTER );
+    $grid->set_halign( $const->GTK_ALIGN_CENTER );
+    $grid->add_css_class('transparent_background');
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label = Gtk::Label->new('Actualiza AlgaOS');
+            $label->add_css_class('title-1');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label =
+              Gtk::Label->new('No hay actualizaciones disponibles, todavía...');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    return $grid;
+}
+
 1;
