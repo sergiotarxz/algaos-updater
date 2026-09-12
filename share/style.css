@@ -1,0 +1,43 @@
+grid.transparent_background > * {
+    background: #FFFDF7;
+    padding: 10px;
+    margin: 5px;
+    color: #29302C;
+    border: 3px solid #668B5B;
+}
+grid.transparent_background > .title-1 {
+    color: #087A5A;
+    background-color: #E8F5E9;
+}
+
+grid.transparent_background > entry {
+    background: #FFFDF7;
+    color: #29302C;
+}
+
+grid.transparent_background > button,
+grid.transparent_background > checkbutton {
+    background: #7A9650;
+    color: white;
+}
+
+grid.transparent_background > entry:hover,
+grid.transparent_background > button:hover,
+grid.transparent_background > checkbutton:hover {
+    background: #91AA62;
+    color: white;
+}
+
+grid.transparent_background > entry:focus,
+grid.transparent_background > button:focus,
+grid.transparent_background > checkbutton:focus {
+    border-color: #F2B84B;
+}
+
+grid.transparent_background > entry:active,
+grid.transparent_background > button:active,
+grid.transparent_background > checkbutton:active {
+    background: #66834A;
+    color: white;
+}
+

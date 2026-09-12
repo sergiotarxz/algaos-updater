@@ -1,0 +1,639 @@
+TYPEMAP
+
+PCAP::Handle T_PTROBJ
+pcap_t *T_PTROBJ
+
+PCAP::Packet T_PTROBJ
+UDPPacketInfo *T_PTROBJ
+
+PCAP::If T_PTROBJ
+pcap_if_t *T_PTROBJ
+
+PCAP::Program T_PTROBJ
+struct bpf_program *T_PTROBJ
+
+PCAP::Header T_PTROBJ
+struct pcap_pkthdr *T_PTROBJ
+
+Constants T_PTROBJ
+AlgaOS::Installer::Constants T_PTROBJ
+
+    
+
+Gtk::Application T_PTROBJ_GOBJECT_GTK_APPLICATION
+
+GtkApplication * T_PTROBJ_GOBJECT_GTK_APPLICATION
+
+
+Gio::Application T_PTROBJ_GOBJECT_G_APPLICATION
+
+GApplication * T_PTROBJ_GOBJECT_G_APPLICATION
+
+
+Gtk::Box T_PTROBJ_GOBJECT_GTK_BOX
+
+GtkBox * T_PTROBJ_GOBJECT_GTK_BOX
+
+
+Gtk::Window T_PTROBJ_GOBJECT_GTK_WINDOW
+
+GtkWindow * T_PTROBJ_GOBJECT_GTK_WINDOW
+
+
+Gtk::ScrolledWindow T_PTROBJ_GOBJECT_GTK_SCROLLED_WINDOW
+
+GtkScrolledWindow * T_PTROBJ_GOBJECT_GTK_SCROLLED_WINDOW
+
+
+Gtk::ApplicationWindow T_PTROBJ_GOBJECT_GTK_APPLICATION_WINDOW
+
+GtkApplicationWindow * T_PTROBJ_GOBJECT_GTK_APPLICATION_WINDOW
+
+
+Gtk::Overlay T_PTROBJ_GOBJECT_GTK_OVERLAY
+
+GtkOverlay * T_PTROBJ_GOBJECT_GTK_OVERLAY
+
+
+G::Object T_PTROBJ_GOBJECT_G_OBJECT
+
+GObject * T_PTROBJ_GOBJECT_G_OBJECT
+
+
+Gtk::Widget T_PTROBJ_GOBJECT_GTK_WIDGET
+
+GtkWidget * T_PTROBJ_GOBJECT_GTK_WIDGET
+
+
+Gtk::Button T_PTROBJ_GOBJECT_GTK_BUTTON
+
+GtkButton * T_PTROBJ_GOBJECT_GTK_BUTTON
+
+
+Gtk::CheckButton T_PTROBJ_GOBJECT_GTK_CHECK_BUTTON
+
+GtkCheckButton * T_PTROBJ_GOBJECT_GTK_CHECK_BUTTON
+
+
+Gtk::Entry T_PTROBJ_GOBJECT_GTK_ENTRY
+
+GtkEntry * T_PTROBJ_GOBJECT_GTK_ENTRY
+
+
+Gtk::Dropdown T_PTROBJ_GOBJECT_GTK_DROP_DOWN
+
+GtkDropDown * T_PTROBJ_GOBJECT_GTK_DROP_DOWN
+
+
+Gtk::Picture T_PTROBJ_GOBJECT_GTK_PICTURE
+
+GtkPicture * T_PTROBJ_GOBJECT_GTK_PICTURE
+
+
+Gio::File T_PTROBJ_GOBJECT_G_FILE
+
+GFile * T_PTROBJ_GOBJECT_G_FILE
+
+
+Gdk::Texture T_PTROBJ_GOBJECT_GDK_TEXTURE
+
+GdkTexture * T_PTROBJ_GOBJECT_GDK_TEXTURE
+
+
+Gdk::Display T_PTROBJ_GOBJECT_GDK_DISPLAY
+
+GdkDisplay * T_PTROBJ_GOBJECT_GDK_DISPLAY
+
+
+Gtk::CssProvider T_PTROBJ_GOBJECT_GTK_CSS_PROVIDER
+
+GtkCssProvider * T_PTROBJ_GOBJECT_GTK_CSS_PROVIDER
+
+
+Gtk::Grid T_PTROBJ_GOBJECT_GTK_GRID
+
+GtkGrid * T_PTROBJ_GOBJECT_GTK_GRID
+
+
+Gtk::Label T_PTROBJ_GOBJECT_GTK_LABEL
+
+GtkLabel * T_PTROBJ_GOBJECT_GTK_LABEL
+
+
+Gtk::Editable T_PTROBJ_GOBJECT_GTK_EDITABLE
+
+GtkEditable * T_PTROBJ_GOBJECT_GTK_EDITABLE
+
+
+Gtk::AlertDialog T_PTROBJ_GOBJECT_GTK_ALERT_DIALOG
+
+GtkAlertDialog * T_PTROBJ_GOBJECT_GTK_ALERT_DIALOG
+
+INPUT
+
+T_PTROBJ_GOBJECT_GTK_APPLICATION
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_application_get_type())) {
+                $var = GTK_APPLICATION (gobject);
+            } else {
+                croak("Not implementing GTK_APPLICATION");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Application object");
+    }
+
+
+T_PTROBJ_GOBJECT_G_APPLICATION
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, g_application_get_type())) {
+                $var = G_APPLICATION (gobject);
+            } else {
+                croak("Not implementing G_APPLICATION");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gio::Application object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_BOX
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_box_get_type())) {
+                $var = GTK_BOX (gobject);
+            } else {
+                croak("Not implementing GTK_BOX");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Box object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_WINDOW
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_window_get_type())) {
+                $var = GTK_WINDOW (gobject);
+            } else {
+                croak("Not implementing GTK_WINDOW");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Window object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_SCROLLED_WINDOW
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_scrolled_window_get_type())) {
+                $var = GTK_SCROLLED_WINDOW (gobject);
+            } else {
+                croak("Not implementing GTK_SCROLLED_WINDOW");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::ScrolledWindow object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_APPLICATION_WINDOW
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_application_window_get_type())) {
+                $var = GTK_APPLICATION_WINDOW (gobject);
+            } else {
+                croak("Not implementing GTK_APPLICATION_WINDOW");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::ApplicationWindow object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_OVERLAY
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_overlay_get_type())) {
+                $var = GTK_OVERLAY (gobject);
+            } else {
+                croak("Not implementing GTK_OVERLAY");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Overlay object");
+    }
+
+
+T_PTROBJ_GOBJECT_G_OBJECT
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, g_object_get_type())) {
+                $var = G_OBJECT (gobject);
+            } else {
+                croak("Not implementing G_OBJECT");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected G::Object object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_WIDGET
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_widget_get_type())) {
+                $var = GTK_WIDGET (gobject);
+            } else {
+                croak("Not implementing GTK_WIDGET");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Widget object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_BUTTON
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_button_get_type())) {
+                $var = GTK_BUTTON (gobject);
+            } else {
+                croak("Not implementing GTK_BUTTON");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Button object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_CHECK_BUTTON
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_check_button_get_type())) {
+                $var = GTK_CHECK_BUTTON (gobject);
+            } else {
+                croak("Not implementing GTK_CHECK_BUTTON");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::CheckButton object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_ENTRY
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_entry_get_type())) {
+                $var = GTK_ENTRY (gobject);
+            } else {
+                croak("Not implementing GTK_ENTRY");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Entry object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_DROP_DOWN
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_drop_down_get_type())) {
+                $var = GTK_DROP_DOWN (gobject);
+            } else {
+                croak("Not implementing GTK_DROP_DOWN");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Dropdown object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_PICTURE
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_picture_get_type())) {
+                $var = GTK_PICTURE (gobject);
+            } else {
+                croak("Not implementing GTK_PICTURE");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Picture object");
+    }
+
+
+T_PTROBJ_GOBJECT_G_FILE
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, g_file_get_type())) {
+                $var = G_FILE (gobject);
+            } else {
+                croak("Not implementing G_FILE");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gio::File object");
+    }
+
+
+T_PTROBJ_GOBJECT_GDK_TEXTURE
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gdk_texture_get_type())) {
+                $var = GDK_TEXTURE (gobject);
+            } else {
+                croak("Not implementing GDK_TEXTURE");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gdk::Texture object");
+    }
+
+
+T_PTROBJ_GOBJECT_GDK_DISPLAY
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gdk_display_get_type())) {
+                $var = GDK_DISPLAY (gobject);
+            } else {
+                croak("Not implementing GDK_DISPLAY");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gdk::Display object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_CSS_PROVIDER
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_css_provider_get_type())) {
+                $var = GTK_CSS_PROVIDER (gobject);
+            } else {
+                croak("Not implementing GTK_CSS_PROVIDER");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::CssProvider object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_GRID
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_grid_get_type())) {
+                $var = GTK_GRID (gobject);
+            } else {
+                croak("Not implementing GTK_GRID");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Grid object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_LABEL
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_label_get_type())) {
+                $var = GTK_LABEL (gobject);
+            } else {
+                croak("Not implementing GTK_LABEL");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Label object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_EDITABLE
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_editable_get_type())) {
+                $var = GTK_EDITABLE (gobject);
+            } else {
+                croak("Not implementing GTK_EDITABLE");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::Editable object");
+    }
+
+
+T_PTROBJ_GOBJECT_GTK_ALERT_DIALOG
+    if (sv_isobject($arg)) {
+        IV integer_pointer = SvIV(SvRV($arg));
+        void *void_object = INT2PTR(void *, integer_pointer);
+        if (G_IS_OBJECT(void_object)) {
+            GObject *gobject = G_OBJECT (void_object);
+            if (G_TYPE_CHECK_INSTANCE_TYPE(gobject, gtk_alert_dialog_get_type())) {
+                $var = GTK_ALERT_DIALOG (gobject);
+            } else {
+                croak("Not implementing GTK_ALERT_DIALOG");
+            }
+        } else {
+            croak("Expected gobject");
+        }
+    } else {
+        croak("Expected Gtk::AlertDialog object");
+    }
+
+OUTPUT
+
+T_PTROBJ_GOBJECT_GTK_APPLICATION
+    sv_setref_pv($arg, "Gtk::Application", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_G_APPLICATION
+    sv_setref_pv($arg, "Gio::Application", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_BOX
+    sv_setref_pv($arg, "Gtk::Box", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_WINDOW
+    sv_setref_pv($arg, "Gtk::Window", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_SCROLLED_WINDOW
+    sv_setref_pv($arg, "Gtk::ScrolledWindow", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_APPLICATION_WINDOW
+    sv_setref_pv($arg, "Gtk::ApplicationWindow", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_OVERLAY
+    sv_setref_pv($arg, "Gtk::Overlay", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_G_OBJECT
+    sv_setref_pv($arg, "G::Object", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_WIDGET
+    sv_setref_pv($arg, "Gtk::Widget", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_BUTTON
+    sv_setref_pv($arg, "Gtk::Button", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_CHECK_BUTTON
+    sv_setref_pv($arg, "Gtk::CheckButton", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_ENTRY
+    sv_setref_pv($arg, "Gtk::Entry", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_DROP_DOWN
+    sv_setref_pv($arg, "Gtk::Dropdown", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_PICTURE
+    sv_setref_pv($arg, "Gtk::Picture", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_G_FILE
+    sv_setref_pv($arg, "Gio::File", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GDK_TEXTURE
+    sv_setref_pv($arg, "Gdk::Texture", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GDK_DISPLAY
+    sv_setref_pv($arg, "Gdk::Display", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_CSS_PROVIDER
+    sv_setref_pv($arg, "Gtk::CssProvider", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_GRID
+    sv_setref_pv($arg, "Gtk::Grid", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_LABEL
+    sv_setref_pv($arg, "Gtk::Label", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_EDITABLE
+    sv_setref_pv($arg, "Gtk::Editable", (void *)$var);
+
+
+T_PTROBJ_GOBJECT_GTK_ALERT_DIALOG
+    sv_setref_pv($arg, "Gtk::AlertDialog", (void *)$var);
+

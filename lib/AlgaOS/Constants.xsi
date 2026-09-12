@@ -1,0 +1,71 @@
+MODULE = AlgaOS::Installer PACKAGE = AlgaOS::Installer::Constants
+
+unsigned int
+GTK_ALIGN_FILL(...)
+CODE:
+    RETVAL = (unsigned int) GTK_ALIGN_FILL;
+OUTPUT:
+    RETVAL
+
+unsigned int
+GTK_ALIGN_START(...)
+CODE:
+    RETVAL = (unsigned int) GTK_ALIGN_START;
+OUTPUT:
+    RETVAL
+
+unsigned int
+GTK_ALIGN_END(...)
+CODE:
+    RETVAL = (unsigned int) GTK_ALIGN_END;
+OUTPUT:
+    RETVAL
+
+unsigned int
+GTK_ALIGN_CENTER(...)
+CODE:
+    RETVAL = (unsigned int) GTK_ALIGN_CENTER;
+OUTPUT:
+    RETVAL
+
+unsigned int
+GTK_ORIENTATION_VERTICAL(...)
+CODE:
+    RETVAL = (unsigned int) GTK_ORIENTATION_VERTICAL;
+OUTPUT:
+    RETVAL
+
+unsigned int
+GTK_STYLE_PROVIDER_PRIORITY_APPLICATION(...)
+CODE:
+    RETVAL = (unsigned int) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+OUTPUT:
+    RETVAL
+
+unsigned int
+G_BINDING_SYNC_CREATE(...)
+CODE:
+    RETVAL = (unsigned int) G_BINDING_SYNC_CREATE;
+OUTPUT:
+    RETVAL
+
+unsigned int
+G_BINDING_DEFAULT(...)
+CODE:
+    RETVAL = (unsigned int) G_BINDING_DEFAULT;
+OUTPUT:
+    RETVAL
+
+AlgaOS::Installer::Constants
+new(...)
+    CODE:
+        RETVAL = malloc(sizeof *RETVAL);
+        *RETVAL = 1;
+    OUTPUT:
+        RETVAL
+
+void
+DESTROY(AlgaOS::Installer::Constants self)
+    CODE:
+        free(self);
+

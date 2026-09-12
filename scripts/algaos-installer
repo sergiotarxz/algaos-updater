@@ -1,0 +1,48 @@
+#!/usr/bin/env perl
+use v5.38.0;
+use strict;
+use warnings;
+
+use Data::Dumper;
+use AlgaOS::Installer::GUI;
+use AlgaOS::Installer::Util;
+use JSON qw/from_json to_json/;
+
+use AlgaOS::Installer;
+
+use Moo;
+use Crypt::URandom qw/urandom/;
+
+has _proxy_started          => ( is => 'rw' );
+has _is_windows             => ( is => 'lazy' );
+has _pipe_name              => ( is => 'lazy' );
+has _secret                 => ( is => 'lazy' );
+
+sub _build__secret($self) {
+    return urandom(64);
+}
+
+sub _build__pipe_name($self) {
+    state $ID_APP = 'FrontProxy';
+    my $socket = "$ID_APP-$$";
+    if ( $self->_is_windows ) {
+        $socket = "\\\\.\\pipe\\$socket";
+    }
+    else {
+        $socket = "/tmp/$socket.sock";
+    }
+    return $socket;
+}
+
+sub _build__is_windows {
+    return $^O eq 'MSWin32';
+}
+
+sub run($self) {
+    AlgaOS::Installer::GUI->new(
+        pipe_name => $self->_pipe_name,
+        secret    => $self->_secret
+    )->run;
+}
+
+__PACKAGE__->new->run;

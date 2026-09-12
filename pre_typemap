@@ -1,0 +1,17 @@
+PCAP::Handle T_PTROBJ
+pcap_t *T_PTROBJ
+
+PCAP::Packet T_PTROBJ
+UDPPacketInfo *T_PTROBJ
+
+PCAP::If T_PTROBJ
+pcap_if_t *T_PTROBJ
+
+PCAP::Program T_PTROBJ
+struct bpf_program *T_PTROBJ
+
+PCAP::Header T_PTROBJ
+struct pcap_pkthdr *T_PTROBJ
+
+Constants T_PTROBJ
+AlgaOS::Installer::Constants T_PTROBJ

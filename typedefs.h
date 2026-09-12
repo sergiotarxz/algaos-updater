@@ -1,0 +1,26 @@
+typedef struct bpf_program *PCAP__Program;
+typedef int *Constants;
+typedef Constants AlgaOS__Installer__Constants;
+
+typedef GtkApplication *Gtk__Application;
+typedef GApplication *Gio__Application;
+typedef GtkBox *Gtk__Box;
+typedef GtkWindow *Gtk__Window;
+typedef GtkScrolledWindow *Gtk__ScrolledWindow;
+typedef GtkApplicationWindow *Gtk__ApplicationWindow;
+typedef GtkOverlay *Gtk__Overlay;
+typedef GObject *G__Object;
+typedef GtkWidget *Gtk__Widget;
+typedef GtkButton *Gtk__Button;
+typedef GtkCheckButton *Gtk__CheckButton;
+typedef GtkEntry *Gtk__Entry;
+typedef GtkDropDown *Gtk__Dropdown;
+typedef GtkPicture *Gtk__Picture;
+typedef GFile *Gio__File;
+typedef GdkTexture *Gdk__Texture;
+typedef GdkDisplay *Gdk__Display;
+typedef GtkCssProvider *Gtk__CssProvider;
+typedef GtkGrid *Gtk__Grid;
+typedef GtkLabel *Gtk__Label;
+typedef GtkEditable *Gtk__Editable;
+typedef GtkAlertDialog *Gtk__AlertDialog;
