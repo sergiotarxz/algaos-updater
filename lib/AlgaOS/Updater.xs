@@ -662,6 +662,11 @@ new(SV *class, unsigned int orientation, int spacing)
 MODULE = AlgaOS::Updater PACKAGE = Gtk::Widget
 
 void
+set_size_request(Gtk::Widget widget, int width, int height)
+    CODE:
+        gtk_widget_set_size_request(widget, width, height);
+
+void
 add_css_class(Gtk::Widget widget, char *class)
     CODE:
         gtk_widget_add_css_class(widget, class);
@@ -710,7 +715,11 @@ timeout_add(SV *class, unsigned int interval, SV *callback)
             perl_timeout_func,
             callback
         );
- 
+
+void
+hold(Gio::Application app)
+    CODE:
+        g_application_hold(app);
 
 void
 run(Gio::Application app, ...)
