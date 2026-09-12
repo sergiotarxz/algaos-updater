@@ -1,19 +1,19 @@
-package AlgaOS::Installer::GUI;
+package AlgaOS::Updater::GUI;
 
 use v5.40.0;
 use strict;
 use warnings;
 
 use Moo;
-use AlgaOS::Installer;
-use AlgaOS::Installer::Util;
+use AlgaOS::Updater;
+use AlgaOS::Updater::Util;
 use List::Util;
 use JSON;
 use POSIX qw/WNOHANG/;
 use PBKDF2::Tiny;
 use Crypt::URandom qw/urandom/;
 use File::ShareDir ':ALL';
-my $dist_dir_files = dist_dir('AlgaOS-Installer');
+my $dist_dir_files = dist_dir('AlgaOS-Updater');
 
 my @perl_args_chroot = @ARGV;
 
@@ -66,11 +66,11 @@ sub call_and_increment_grid_row( $self, $coderef ) {
 }
 
 sub _build_const {
-    return AlgaOS::Installer::Constants->new;
+    return AlgaOS::Updater::Constants->new;
 }
 
 sub _build_app {
-    return Gtk::Application->new( "com.algaos.Installer", 0 );
+    return Gtk::Application->new( "com.algaos.Updater", 0 );
 }
 
 sub _create_install_grid( $self, $desc ) {
@@ -570,7 +570,7 @@ sub _install( $self, %args ) {
         eval {
             $prepare->();
             excfailexit qw{sudo perl}, @perl_args_chroot,
-              qw{-MAlgaOS::Installer::GUI -e AlgaOS::Installer::GUI::chroot_install_commands(@ARGV)},
+              qw{-MAlgaOS::Updater::GUI -e AlgaOS::Updater::GUI::chroot_install_commands(@ARGV)},
               $hostname, $username, $password, $timezone, $locale,
               $container_block, $complete_systemd;
 

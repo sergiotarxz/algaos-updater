@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Instalar AlgaOS
-GenericName=Instalador
-Exec=algaos-installer
-Icon=com.algaos.Installer
-Terminal=true
-Type=Application

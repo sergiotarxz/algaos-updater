@@ -1,4 +1,4 @@
-package AlgaOS::Installer::Util;
+package AlgaOS::Updater::Util;
 
 use v5.40.0;
 use strict;

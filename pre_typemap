@@ -14,4 +14,4 @@ PCAP::Header T_PTROBJ
 struct pcap_pkthdr *T_PTROBJ
 
 Constants T_PTROBJ
-AlgaOS::Installer::Constants T_PTROBJ
+AlgaOS::Updater::Constants T_PTROBJ

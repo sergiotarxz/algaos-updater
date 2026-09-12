@@ -67,7 +67,7 @@ generate_constants_xsi();
 sub generate_constants_xsi {
     open my $fh, '>', 'lib/AlgaOS/Constants.xsi'
       or die "Cannot create Constants.xsi: $!";
-    say $fh "MODULE = AlgaOS::Installer PACKAGE = AlgaOS::Installer::Constants";
+    say $fh "MODULE = AlgaOS::Updater PACKAGE = AlgaOS::Updater::Constants";
 
     say $fh "";
 
@@ -85,7 +85,7 @@ XS
     }
 
     say $fh <<"XS";
-AlgaOS::Installer::Constants
+AlgaOS::Updater::Constants
 new(...)
     CODE:
         RETVAL = malloc(sizeof *RETVAL);
@@ -94,14 +94,14 @@ new(...)
         RETVAL
 
 void
-DESTROY(AlgaOS::Installer::Constants self)
+DESTROY(AlgaOS::Updater::Constants self)
     CODE:
         free(self);
 XS
 }
 
 sub generate_parentships {
-    open my $fh, '>', 'lib/AlgaOS/Installer/Parents.pm'
+    open my $fh, '>', 'lib/AlgaOS/Updater/Parents.pm'
       or die "Cannot create parentships: $!";
     for my $child ( keys %parentships ) {
         say $fh "package $child;";
@@ -112,7 +112,7 @@ sub generate_parentships {
 }
 
 my $build = Module::Build->new(
-    module_name => 'AlgaOS::Installer',
+    module_name => 'AlgaOS::Updater',
     license     => 'perl',
     requires    => {
         'perl'               => '5.38.2',
@@ -124,7 +124,7 @@ my $build = Module::Build->new(
 	'File::ShareDir'     => 0,
     },
     script_files => [
-        'scripts/algaos-installer',
+        'scripts/algaos-updater',
     ],
     share_dir => 'share',
     extra_compiler_flags => scalar `pkg-config --cflags gtk4` . " -I$ENV{PWD}",

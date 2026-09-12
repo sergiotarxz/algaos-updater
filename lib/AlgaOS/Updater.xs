@@ -396,7 +396,7 @@ perl_signal_callback(GObject *object, gpointer data)
     LEAVE;
 }
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::AlertDialog
+MODULE = AlgaOS::Updater PACKAGE = Gtk::AlertDialog
 
 Gtk::AlertDialog
 new(SV *class, char *title, char *detail)
@@ -428,7 +428,7 @@ choose(Gtk::AlertDialog self, Gtk::Window window, SV *callback)
         SvREFCNT_inc(callback);
         gtk_alert_dialog_choose(self, window, NULL, gtk_alert_dialog_choose_callback, callback);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Overlay
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Overlay
 
 Gtk::Overlay
 new(...)
@@ -448,7 +448,7 @@ set_child(Gtk::Overlay over, GtkWidget *child)
     CODE:
         gtk_overlay_set_child(over, child);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Grid
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Grid
 
 Gtk::Grid
 new(...)
@@ -463,7 +463,7 @@ attach(Gtk::Grid self, Gtk::Widget widget, int column, int row, int width, int h
     CODE:
         gtk_grid_attach(self, widget, column, row, width, height);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Label
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Label
 
 Gtk::Label
 new(SV *class, char *label)
@@ -475,7 +475,7 @@ new(SV *class, char *label)
 
 INCLUDE: Constants.xsi
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::ApplicationWindow
+MODULE = AlgaOS::Updater PACKAGE = Gtk::ApplicationWindow
 
 Gtk::ApplicationWindow
 new(SV *class, Gtk::Application app)
@@ -485,7 +485,7 @@ new(SV *class, Gtk::Application app)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Editable
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Editable
 
 const char *
 get_text(Gtk::Editable self)
@@ -494,7 +494,7 @@ get_text(Gtk::Editable self)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Entry
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Entry
 
 Gtk::Entry
 new(...)
@@ -504,7 +504,7 @@ new(...)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::CheckButton
+MODULE = AlgaOS::Updater PACKAGE = Gtk::CheckButton
 
 Gtk::CheckButton
 new(...)
@@ -521,7 +521,7 @@ get_active(Gtk::CheckButton self)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Button
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Button
 
 void
 set_label(Gtk::Button button, char *label)
@@ -536,7 +536,7 @@ new(SV *class, char *label)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Dropdown
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Dropdown
 
 Gtk::Dropdown
 new(SV *class, AV *items)
@@ -599,7 +599,7 @@ selected(Gtk::Dropdown self)
 	OUTPUT:
 		RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::ScrolledWindow
+MODULE = AlgaOS::Updater PACKAGE = Gtk::ScrolledWindow
 
 Gtk::ScrolledWindow
 new(SV *class)
@@ -614,7 +614,7 @@ set_child(Gtk::ScrolledWindow self, Gtk::Widget widget)
     CODE:
         gtk_scrolled_window_set_child(self, widget);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Window
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Window
 
 void
 set_title(Gtk::Window self, char *title)
@@ -649,7 +649,7 @@ present(Gtk::Window win)
     CODE:
         gtk_window_present(win);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Box
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Box
 
 Gtk::Box
 new(SV *class, unsigned int orientation, int spacing)
@@ -659,7 +659,7 @@ new(SV *class, unsigned int orientation, int spacing)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Widget
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Widget
 
 void
 add_css_class(Gtk::Widget widget, char *class)
@@ -684,7 +684,7 @@ set_halign(Gtk::Widget widget, unsigned int constant)
     CODE:
         gtk_widget_set_halign(widget, constant);
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Application
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Application
 
 Gtk::Application
 new(SV *class, char *app_name, size_t flags)
@@ -694,7 +694,7 @@ new(SV *class, char *app_name, size_t flags)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gio::Application
+MODULE = AlgaOS::Updater PACKAGE = Gio::Application
 
 void
 timeout_add(SV *class, unsigned int interval, SV *callback)
@@ -730,7 +730,7 @@ run(Gio::Application app, ...)
 
         free(argv);
 
-MODULE = AlgaOS::Installer PACKAGE = Gio::File
+MODULE = AlgaOS::Updater PACKAGE = Gio::File
 
 Gio::File
 new(SV *class, const char *path)
@@ -740,7 +740,7 @@ new(SV *class, const char *path)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::Picture
+MODULE = AlgaOS::Updater PACKAGE = Gtk::Picture
 
 Gtk::Picture
 new(SV *class, Gdk::Texture texture)
@@ -750,7 +750,7 @@ new(SV *class, Gdk::Texture texture)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = Gtk::CssProvider
+MODULE = AlgaOS::Updater PACKAGE = Gtk::CssProvider
 
 Gtk::CssProvider
 new(...)
@@ -765,14 +765,14 @@ load_from_path(Gtk::CssProvider self, char *path)
     CODE:
         gtk_css_provider_load_from_path(self, path);
 
-MODULE = AlgaOS::Installer PACKAGE = Gdk::Display
+MODULE = AlgaOS::Updater PACKAGE = Gdk::Display
 
 void
 add_css_provider(Gdk::Display self, Gtk::CssProvider provider, int priority)
     CODE:
         gtk_style_context_add_provider_for_display(self, GTK_STYLE_PROVIDER (provider), priority);
 
-MODULE = AlgaOS::Installer PACKAGE = Gdk::Texture
+MODULE = AlgaOS::Updater PACKAGE = Gdk::Texture
 
 Gdk::Texture
 new(SV *class, Gio::File file)
@@ -786,7 +786,7 @@ new(SV *class, Gio::File file)
     OUTPUT:
         RETVAL
 
-MODULE = AlgaOS::Installer PACKAGE = G::Object
+MODULE = AlgaOS::Updater PACKAGE = G::Object
 
 void
 bind_property_full(G::Object self, char *self_property, G::Object target, char *target_property, int flags, SV *transform_to, SV *transform_from)

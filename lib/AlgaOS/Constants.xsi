@@ -1,4 +1,4 @@
-MODULE = AlgaOS::Installer PACKAGE = AlgaOS::Installer::Constants
+MODULE = AlgaOS::Updater PACKAGE = AlgaOS::Updater::Constants
 
 unsigned int
 GTK_ALIGN_FILL(...)
@@ -56,7 +56,7 @@ CODE:
 OUTPUT:
     RETVAL
 
-AlgaOS::Installer::Constants
+AlgaOS::Updater::Constants
 new(...)
     CODE:
         RETVAL = malloc(sizeof *RETVAL);
@@ -65,7 +65,7 @@ new(...)
         RETVAL
 
 void
-DESTROY(AlgaOS::Installer::Constants self)
+DESTROY(AlgaOS::Updater::Constants self)
     CODE:
         free(self);
 

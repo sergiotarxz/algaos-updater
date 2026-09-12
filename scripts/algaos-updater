@@ -4,11 +4,11 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use AlgaOS::Installer::GUI;
-use AlgaOS::Installer::Util;
+use AlgaOS::Updater::GUI;
+use AlgaOS::Updater::Util;
 use JSON qw/from_json to_json/;
 
-use AlgaOS::Installer;
+use AlgaOS::Updater;
 
 use Moo;
 use Crypt::URandom qw/urandom/;
@@ -39,7 +39,7 @@ sub _build__is_windows {
 }
 
 sub run($self) {
-    AlgaOS::Installer::GUI->new(
+    AlgaOS::Updater::GUI->new(
         pipe_name => $self->_pipe_name,
         secret    => $self->_secret
     )->run;
