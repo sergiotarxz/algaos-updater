@@ -33,6 +33,33 @@ has started_gui            => ( is => 'rw' );
 has pid                    => ( is => 'rw' );
 has _frontend_shows_update => ( is => 'rw' );
 has _have_update           => ( is => 'rw' );
+has _is_updating           => ( is => 'rw' );
+has _machine_id            => ( is => 'lazy' );
+has _tmp_dir               => ( is => 'lazy' );
+
+sub _build__machine_id {
+    open my $fh, '<', '/etc/machine-id';
+    local $/ = undef;
+    my $return = <$fh>;
+    $return =~ s/\s+//g;
+    return $return;
+}
+
+sub _build__tmp_dir {
+    my $tmp_dir = '/tmp/algaos-updater/';
+    system qw{sudo rm -rf},    $tmp_dir;
+    system qw{sudo mkdir -pv}, $tmp_dir;
+    return $tmp_dir;
+}
+
+sub sync_repo($self) {
+    my $file = $self->_tmp_dir . "/webrsync.tar.bz2";
+    system qw{sudo rm -rf /var/db/repos/algaos/};
+    system qw{sudo mkdir -pv /var/db/repos/algaos/};
+    system qw{sudo curl -L -o}, $file,
+      "https://algaos.com/dist/" . $self->_machine_id . "/webrsync.tar.bz2";
+    system qw{sudo tar -C /var/db/repos/algaos/ -xvpf}, $file;
+}
 
 sub call_and_increment_grid_row( $self, $coderef ) {
     $coderef->();
@@ -49,6 +76,10 @@ sub _build_app {
 
 sub activate($self) {
     if ( $self->started_gui ) {
+        if ( $self->_is_updating ) {
+            $self->_scroll->set_child( $self->_show_updating );
+            return;
+        }
         if ( $self->_frontend_shows_update != $self->_have_update ) {
             if ( !$self->_have_update ) {
                 $self->_scroll->set_child( $self->_show_no_updates_grid );
@@ -82,12 +113,19 @@ sub activate($self) {
     $overlay->set_child($picture);
     my $scroll = Gtk::ScrolledWindow->new;
     $self->_scroll($scroll);
-    $self->_frontend_shows_update($self->_have_update);
-    $self->_scroll->set_child(
-          $self->_frontend_shows_update
-        ? $self->_show_updates_grid
-        : $self->_show_no_updates_grid
-    );
+    $self->_frontend_shows_update( $self->_have_update );
+
+    if ( $self->_is_updating ) {
+        $self->_scroll->set_child( $self->_show_updating );
+
+    }
+    else {
+        $self->_scroll->set_child(
+              $self->_frontend_shows_update
+            ? $self->_show_updates_grid
+            : $self->_show_no_updates_grid
+        );
+    }
     $overlay->add_overlay($scroll);
     $win->set_child($overlay);
     $win->connect(
@@ -100,10 +138,12 @@ sub activate($self) {
     $win->present;
 }
 
-sub is_there_updates {
-    my $output = `emerge -p --quiet -uUDN \@system`;
+sub is_there_updates($self) {
+    $self->sync_repo;
+    my $output = `emerge -p --getbinpkg -K -uUDN \@system`;
+    say $output;
 
-    my $updatable = $output =~ /^\[(?:ebuild|binary)\s+/;
+    my $updatable = $output =~ /^\[(?:ebuild|binary)\s+/m;
 
     if ($updatable) {
         exit 0;
@@ -121,9 +161,10 @@ sub _check_pid($self) {
         {
             $self->activate;
         }
-	# If we didn't act before frontend must
-	# act like it knows what happened.
-	$self->_frontend_shows_update($self->_have_update);
+
+        # If we didn't act before frontend must
+        # act like it knows what happened.
+        $self->_frontend_shows_update( $self->_have_update );
         $self->pid(0);
         return 1;
     }
@@ -205,9 +246,70 @@ sub _show_updates_grid($self) {
     );
     $self->call_and_increment_grid_row(
         sub {
-            my $label =
-              Gtk::Label->new(
-                'Hay actualizaciones disponibles. ¡Actualiza ahora!');
+            my $label = Gtk::Label->new('Hay actualizaciones disponibles…');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    $self->call_and_increment_grid_row(
+        sub {
+            my $button = Gtk::Button->new('¡Actualiza ahora!');
+            $button->connect(
+                'clicked',
+                sub {
+                    $self->_update;
+                }
+            );
+            $grid->attach( $button, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    return $grid;
+}
+
+sub _update($self) {
+    $self->_is_updating(1);
+    $self->_have_update(1);
+    $self->_frontend_shows_update(1);
+    $self->activate;
+    my $pid = fork;
+    if ( !$pid ) {
+        if ( !system qw{sudo emerge --getbinpkg -K -uUDN @world @system} ) {
+            exit 0;
+        }
+        exit 1;
+    }
+    $self->app->timeout_add(
+        1000,
+        sub {
+            if ( 0 < waitpid $pid, WNOHANG ) {
+                $self->_have_update(0);
+                $self->_is_updating(0);
+                $self->_frontend_shows_update(1);
+                $self->activate;
+            }
+        }
+    );
+}
+
+sub _show_updating($self) {
+    my $grid  = Gtk::Grid->new;
+    my $const = $self->const;
+    $grid->set_valign( $const->GTK_ALIGN_CENTER );
+    $grid->set_halign( $const->GTK_ALIGN_CENTER );
+    $grid->add_css_class('transparent_background');
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label = Gtk::Label->new('Actualizando AlgaOS');
+            $label->add_css_class('title-1');
+            $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
+        }
+    );
+    $self->call_and_increment_grid_row(
+        sub {
+            my $label = Gtk::Label->new(
+                'Espera pacientemente, apagar el 
+ordenador ahora puede causar daños en 
+el software no cubiertos por la garatia.'
+            );
             $grid->attach( $label, 0, $self->_grid_row, 3, 1 );
         }
     );
