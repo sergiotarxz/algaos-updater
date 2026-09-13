@@ -156,6 +156,9 @@ sub is_there_updates($self) {
 sub _check_pid($self) {
     if ( 0 < waitpid $self->pid, WNOHANG ) {
         $self->_have_update( $? == 0 );
+	if ($self->_have_update) {
+		$self->notify('Hay actualizaciones disponibles, para mantener su ordenador seguro actualice ahora.');
+	}
         if (   $self->_have_update
             && $self->_have_update != $self->_frontend_shows_update )
         {
@@ -166,9 +169,9 @@ sub _check_pid($self) {
         # act like it knows what happened.
         $self->_frontend_shows_update( $self->_have_update );
         $self->pid(0);
-        return 1;
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 sub _start_pid($self) {
@@ -281,13 +284,24 @@ sub _update($self) {
         1000,
         sub {
             if ( 0 < waitpid $pid, WNOHANG ) {
+                say 'Update finished';
+		$self->notify('La actualización terminó');
                 $self->_have_update(0);
                 $self->_is_updating(0);
                 $self->_frontend_shows_update(1);
                 $self->activate;
+                return 0;
             }
+            say 'Waiting another second for update finish';
+            return 1;
         }
     );
+}
+
+sub notify( $self, $description ) {
+    system qw{notify-send --icon com.algaos.Updater}, 'Actualiza AlgaOS',
+      $description, '-a',
+      'Actualizador AlgaOS';
 }
 
 sub _show_updating($self) {
