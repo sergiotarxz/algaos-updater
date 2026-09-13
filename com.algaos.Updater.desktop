@@ -4,5 +4,4 @@ Name=Actualiza AlgaOS
 GenericName=Actualizador
 Exec=algaos-updater
 Icon=com.algaos.Updater
-Terminal=true
 Type=Application
