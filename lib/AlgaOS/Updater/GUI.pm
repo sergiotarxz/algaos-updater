@@ -140,7 +140,7 @@ sub activate($self) {
 
 sub is_there_updates($self) {
     $self->sync_repo;
-    my $output = `emerge -p --getbinpkg -K -uUDN \@system`;
+    my $output = `emerge -p --getbinpkg -uUDN \@system`;
     say $output;
 
     my $updatable = $output =~ /^\[(?:ebuild|binary)\s+/m;
@@ -275,7 +275,7 @@ sub _update($self) {
     $self->activate;
     my $pid = fork;
     if ( !$pid ) {
-        if ( !system qw{sudo emerge --getbinpkg -K -uUDN @world @system} ) {
+        if ( !system qw{sudo emerge --getbinpkg -uUDN @world @system} ) {
             exit 0;
         }
         exit 1;
