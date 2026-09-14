@@ -156,9 +156,11 @@ sub is_there_updates($self) {
 sub _check_pid($self) {
     if ( 0 < waitpid $self->pid, WNOHANG ) {
         $self->_have_update( $? == 0 );
-	if ($self->_have_update) {
-		$self->notify('Hay actualizaciones disponibles, para mantener su ordenador seguro actualice ahora.');
-	}
+        if ( $self->_have_update ) {
+            $self->notify(
+'Hay actualizaciones disponibles, para mantener su ordenador seguro actualice ahora.'
+            );
+        }
         if (   $self->_have_update
             && $self->_have_update != $self->_frontend_shows_update )
         {
@@ -275,17 +277,20 @@ sub _update($self) {
     $self->activate;
     my $pid = fork;
     if ( !$pid ) {
-        if ( !system qw{sudo emerge --getbinpkg -uUDN @world @system} ) {
-            exit 0;
+        if ( system qw{sudo emerge --getbinpkg -uUDN @world @system} ) {
+            exit 1;
         }
-        exit 1;
+        if ( system qw{sudo emerge --depclean} ) {
+            exit 1;
+        }
+        exit 0;
     }
     $self->app->timeout_add(
         1000,
         sub {
             if ( 0 < waitpid $pid, WNOHANG ) {
                 say 'Update finished';
-		$self->notify('La actualización terminó');
+                $self->notify('La actualización terminó');
                 $self->_have_update(0);
                 $self->_is_updating(0);
                 $self->_frontend_shows_update(1);
