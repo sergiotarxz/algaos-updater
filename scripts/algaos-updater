@@ -5,7 +5,6 @@ use warnings;
 
 use Data::Dumper;
 use AlgaOS::Updater::GUI;
-use AlgaOS::Updater::Util;
 use JSON qw/from_json to_json/;
 
 use AlgaOS::Updater;
