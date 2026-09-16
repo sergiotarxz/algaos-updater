@@ -294,7 +294,7 @@ EOF
 
             close $bin_fh or die "tee: $?";
         }
-        if ( system qw{sudo emerge -uUDN algaos-updater} ) {
+        if ( system qw{sudo emerge -uUDN portage algaos-updater} ) {
             exit 1;
         }
         if (
