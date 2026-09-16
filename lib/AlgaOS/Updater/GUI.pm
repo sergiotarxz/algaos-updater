@@ -140,7 +140,7 @@ sub activate($self) {
 
 sub is_there_updates($self) {
     $self->sync_repo;
-    my $output = `emerge -p --getbinpkg -uUDN \@system`;
+    my $output = `emerge -p --getbinpkg -uUDN \@world --with-bdeps=y`;
     say $output;
 
     my $updatable = $output =~ /^\[(?:ebuild|binary)\s+/m;
@@ -295,10 +295,10 @@ EOF
 
             close $bin_fh or die "tee: $?";
         }
-        if ( system qw{sudo emerge --noreplace --getbinpkg @world @system} ) {
+        if ( system qw{sudo emerge --noreplace --getbinpkg @world --with-bdeps=y} ) {
             exit 1;
         }
-        if ( system qw{sudo emerge --getbinpkg -uUDN @world @system} ) {
+        if ( system qw{sudo emerge --getbinpkg -uUDN @world --with-bdeps=y} ) {
             exit 1;
         }
         if ( system qw{sudo emerge --depclean} ) {
