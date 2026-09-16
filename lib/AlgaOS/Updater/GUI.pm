@@ -279,7 +279,6 @@ sub _update($self) {
     if ( !$pid ) {
         system qw{rm -v /etc/portage/binrepos.conf/gentoo.conf};
         {
-            open my $bin_fh, '>', '/etc/portage/binrepos.conf/algaos.conf';
             open my $bin_fh, '|-',
               qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
               or die "open: $!";
@@ -295,7 +294,13 @@ EOF
 
             close $bin_fh or die "tee: $?";
         }
-        if ( system qw{sudo emerge --noreplace --getbinpkg @world --with-bdeps=y} ) {
+        if ( system qw{sudo emerge -uUDN algaos-updater} ) {
+            exit 1;
+        }
+        if (
+            system
+            qw{sudo emerge --noreplace --getbinpkg @world --with-bdeps=y} )
+        {
             exit 1;
         }
         if ( system qw{sudo emerge --getbinpkg -uUDN @world --with-bdeps=y} ) {
