@@ -309,6 +309,10 @@ EOF
         if ( system qw{sudo emerge --depclean} ) {
             exit 1;
         }
+        my @services = qw/power-profiles-daemon/;
+        for my $service (@services) {
+            system qw{systemctl enable --now}, $service;
+        }
         exit 0;
     }
     $self->app->timeout_add(
