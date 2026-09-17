@@ -311,7 +311,7 @@ EOF
         }
         my @services = qw/power-profiles-daemon/;
         for my $service (@services) {
-            system qw{systemctl enable --now}, $service;
+            system qw{sudo systemctl enable --now}, $service;
         }
         exit 0;
     }
