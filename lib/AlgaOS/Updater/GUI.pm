@@ -139,7 +139,25 @@ sub activate($self) {
 }
 
 sub is_there_updates($self) {
+    system qw{rm -v /etc/portage/binrepos.conf/gentoo.conf};
+    {
+        open my $bin_fh, '|-',
+          qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
+          or die "open: $!";
+
+        say $bin_fh <<"EOF";
+[algaos]
+
+location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
+sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
+priority = 1
+verify-signature = false
+EOF
+
+        close $bin_fh or die "tee: $?";
+    }
     $self->sync_repo;
+
     my $output = `emerge -p --getbinpkg -uUDN \@world --with-bdeps=y`;
     say $output;
 
@@ -277,23 +295,6 @@ sub _update($self) {
     $self->activate;
     my $pid = fork;
     if ( !$pid ) {
-        system qw{rm -v /etc/portage/binrepos.conf/gentoo.conf};
-        {
-            open my $bin_fh, '|-',
-              qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
-              or die "open: $!";
-
-            say $bin_fh <<"EOF";
-[algaos]
-
-location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
-sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
-priority = 1
-verify-signature = false
-EOF
-
-            close $bin_fh or die "tee: $?";
-        }
         if ( system qw{sudo emerge -uUDN portage algaos-updater} ) {
             exit 1;
         }
