@@ -36,12 +36,27 @@ has _have_update           => ( is => 'rw' );
 has _is_updating           => ( is => 'rw' );
 has _machine_id            => ( is => 'lazy' );
 has _tmp_dir               => ( is => 'lazy' );
+has _channel_preference    => ( is => 'lazy' );
 
 sub _build__machine_id {
     open my $fh, '<', '/etc/machine-id';
     local $/ = undef;
     my $return = <$fh>;
     $return =~ s/\s+//g;
+    return $return;
+}
+
+sub _build__channel_preference($self) {
+    open my $fh, '<', '/etc/algaos-channel';
+    local $/ = undef;
+    my $return = <$fh>;
+    $return =~ s/\s+//g;
+    if ( !grep { $return eq $_ } (qw/latest next stable/) ) {
+        $self->notify(
+'El actualizador de AlgaOS encontró un valor inesperado en /etc/algaos-channel y sufrió un error, los valores validos son latest y next.'
+        );
+        die "No channel $return.";
+    }
     return $return;
 }
 
@@ -53,11 +68,15 @@ sub _build__tmp_dir {
 }
 
 sub sync_repo($self) {
+    my $webrsync_options =
+      defined $self->_channel_preference
+      ? "?preference=" . $self->_channel_preference
+      : "";
     my $file = $self->_tmp_dir . "/webrsync.tar.bz2";
     system qw{sudo rm -rf /var/db/repos/algaos/};
     system qw{sudo mkdir -pv /var/db/repos/algaos/};
     system qw{sudo curl -L -o}, $file,
-      "https://algaos.com/dist/" . $self->_machine_id . "/webrsync.tar.bz2";
+      "https://algaos.com/dist/" . $self->_machine_id . "/webrsync.tar.bz2$webrsync_options";
     system qw{sudo tar -C /var/db/repos/algaos/ -xvpf}, $file;
 }
 
@@ -145,11 +164,15 @@ sub is_there_updates($self) {
           qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
           or die "open: $!";
 
+        my $binpkg_options =
+          defined $self->_channel_preference
+          ? "?preference=" . $self->_channel_preference
+          : "";
         say $bin_fh <<"EOF";
 [algaos]
 
-location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
-sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg
+location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg$binpkg_options
+sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg$binpkg_options
 priority = 1
 verify-signature = false
 EOF
