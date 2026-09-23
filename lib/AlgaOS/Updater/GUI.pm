@@ -164,12 +164,12 @@ sub is_there_updates($self) {
           qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
           or die "open: $!";
 
-        my $preference = $self->_channel_preference // '';
+        my $preference = '-'.$self->_channel_preference // '';
         say $bin_fh <<"EOF";
 [algaos]
 
-location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg/$preference
-sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg/$preference
+location = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg-$preference
+sync-uri = https://algaos.com/dist/@{[$self->_machine_id]}/binpkg-$preference
 priority = 1
 verify-signature = false
 EOF
