@@ -47,7 +47,7 @@ sub _build__machine_id {
 }
 
 sub _build__channel_preference($self) {
-    open my $fh, '<', '/etc/algaos-channel';
+    open my $fh, '<', '/etc/algaos-channel' or return;;
     local $/ = undef;
     my $return = <$fh>;
     $return =~ s/\s+//g;
