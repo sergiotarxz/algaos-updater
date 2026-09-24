@@ -164,7 +164,11 @@ sub is_there_updates($self) {
           qw{sudo tee /etc/portage/binrepos.conf/algaos.conf}
           or die "open: $!";
 
-        my $preference = '-'.$self->_channel_preference // '';
+        my $preference = $self->_channel_preference;
+        if ($preference) {
+                $preference = '-'.$preference;
+        }
+        $preference =// '';
         say $bin_fh <<"EOF";
 [algaos]
 
