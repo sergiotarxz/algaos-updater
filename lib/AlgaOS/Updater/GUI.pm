@@ -168,7 +168,7 @@ sub is_there_updates($self) {
         if ($preference) {
                 $preference = '-'.$preference;
         }
-        $preference =// '';
+        $preference //= '';
         say $bin_fh <<"EOF";
 [algaos]
 
@@ -182,7 +182,8 @@ EOF
     }
     $self->sync_repo;
 
-    my $output = `emerge -p --getbinpkg -uUDN \@world --with-bdeps=y`;
+    my $output = `emerge -p --getbinpkg -uUDN \@world \@system --with-bdeps=y`;
+    $output .= `emerge -p --getbinpkg --noreplace \@world \@system --with-bdeps=y`;
     say $output;
 
     my $updatable = $output =~ /^\[(?:ebuild|binary)\s+/m;
@@ -324,11 +325,11 @@ sub _update($self) {
         }
         if (
             system
-            qw{sudo emerge --noreplace --getbinpkg @world --with-bdeps=y} )
+            qw{sudo emerge -1 --noreplace --getbinpkg @world @system --with-bdeps=y} )
         {
             exit 1;
         }
-        if ( system qw{sudo emerge --getbinpkg -uUDN @world --with-bdeps=y} ) {
+        if ( system qw{sudo emerge -1 --getbinpkg -uUDN @world @system --with-bdeps=y} ) {
             exit 1;
         }
         if ( system qw{sudo emerge --depclean} ) {
